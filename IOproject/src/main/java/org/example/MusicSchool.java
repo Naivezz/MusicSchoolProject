@@ -20,6 +20,7 @@ public class MusicSchool {
     private List<Harmonogram> harmonogramList;
     private List<HarmonogramKoncert> harmonogramKoncertList;
     private Map<Uczen , WykazOcen> wykazOcenMap;
+    private List<Ocena> ocenaList;
 
     public MusicSchool() {
         uczenList = new ArrayList<>();
@@ -136,6 +137,39 @@ public class MusicSchool {
             }
         }
         return lessons;
+    }
+
+    public double sredniaOcen(Uczen uczen) {
+        WykazOcen gradeBook = wykazOcenMap.get(uczen);
+        if (gradeBook != null) {
+            return gradeBook.obliczycSredniaOcen();
+        }
+        return 0;
+    }
+
+    public String postepy(Uczen uczen) {
+        WykazOcen wykazOcen = wykazOcenMap.get(uczen);
+        if (wykazOcen == null) {
+            return "Brak wykazOcen dla ucznia " + uczen.getLastName();
+        }
+
+        StringBuilder info = new StringBuilder();
+        info.append("Informacja dla ").append(uczen.getLastName()).append("\n");
+        info.append("Średnia Ocen: ").append(wykazOcen.obliczycSredniaOcen()).append("\n");
+
+        Map<Przedmiot, List<Ocena>> ocenaPrzedmiot = new HashMap<>();
+        for (Ocena ocena : wykazOcen.getOcenaList()) {
+            ocenaPrzedmiot.computeIfAbsent(ocena.getPrzedmiot(), x -> new ArrayList<>()).add(ocena);
+        }
+
+        for (var entry : ocenaPrzedmiot.entrySet()) {
+            Przedmiot przedmiot = entry.getKey();
+            List<Ocena> oceny = entry.getValue();
+            double average = oceny.stream().mapToInt(Ocena::getGrade).average().orElse(0.0);
+            info.append("Predmiot: ").append(przedmiot.getName()).append(", Średnia ocena: ").append(average).append("\n");
+        }
+
+        return info.toString();
     }
 
 

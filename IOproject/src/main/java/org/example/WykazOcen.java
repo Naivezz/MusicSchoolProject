@@ -1,8 +1,11 @@
 package org.example;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class WykazOcen {
 
     private Uczen uczen;
@@ -29,6 +32,15 @@ public class WykazOcen {
             ocenaList.set(index, nowaOcena);
         }
     }
+
+
+    public double obliczycSredniaOcen() {
+        return ocenaList.stream()
+                .mapToInt(Ocena::getGrade)
+                .average()
+                .orElse(0.0);
+    }
+
 
     @Override
     public String toString() {

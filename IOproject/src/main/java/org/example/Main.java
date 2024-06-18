@@ -2,6 +2,7 @@ package org.example;
 
 import org.w3c.dom.ls.LSOutput;
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -190,8 +191,33 @@ public class Main {
         school.changeOcena(uczen3, ocena2, ocena3);
         System.out.println(school.getWykazOcenMap());
 
+
+        System.out.println("---------------------------");
+
+        Ocena ocena5 = new Ocena(5, uczen3, LocalDate.of(2020,10,11), przedmiot1, nauczyciel1);
+        Ocena ocena6 = new Ocena(3, uczen3, LocalDate.of(2020,11,11), przedmiot1, nauczyciel1);
+        Ocena ocena7 = new Ocena(2, uczen3, LocalDate.of(2020,10,12), przedmiot1, nauczyciel1);
+        school.addOcena(uczen2, ocena5);
+        school.addOcena(uczen2, ocena6);
+        school.addOcena(uczen2, ocena7);
+        System.out.println(school.getWykazOcenMap());
+
+        double averageGrade = school.sredniaOcen(uczen2);
+        System.out.println("Średnia : " + averageGrade);
+
         System.out.println("----------------------------------");
 
+
+        Ocena ocena8 = new Ocena(5, uczen3, LocalDate.of(2020,10,11), przedmiot2, nauczyciel2);
+        Ocena ocena9 = new Ocena(5, uczen3, LocalDate.of(2020,11,11), przedmiot2, nauczyciel2);
+        Ocena ocena10 = new Ocena(4, uczen3, LocalDate.of(2020,10,12), przedmiot2, nauczyciel2);
+        school.addOcena(uczen2, ocena8);
+        school.addOcena(uczen2, ocena9);
+        school.addOcena(uczen2, ocena10);
+
+
+        String info = school.postepy(uczen2);
+        System.out.println(info);
 
 
         List<Wypożyczenie> wypożyczenies = school.wypożyczenies(uczen2);
@@ -208,8 +234,6 @@ public class Main {
 
         System.out.println("All information about musicSchool");
         System.out.println(school);
-
-
 
     }
 }
